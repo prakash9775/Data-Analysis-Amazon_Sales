@@ -1,0 +1,125 @@
+Power Query
+============
+Select the column, go to view ribbon and check on column distribution and column quality.
+__________________________________________________________________________________________
+Power BI 
+==========
+go to table, create New Table
+==
+ making date like. 1/(1-30).........12/(1-30)  =>mm/day
+Date Table = CALENDAR(min(Amazon_Data[Order Date]),MAX(Amazon_Data[Order Date]))
+----------------------------------------------------------------------------------
+add column: extracting month name
+Month Name = FORMAT('Date Table'[Date],"mmm")                   eg. mmm= jan , eg.mmmm= january
+------------------------------------------------------------------------------------------------------------
+1.Dashboard background
+-- from canvas background > add image
+-- reduce transparancy to 0.
+-- form canvas setting > vertical alignment > middle
+
+2. insert rectangle
+ --shape> shape> Rounded Rectangle> rounded corners> 10%
+---General> size: 50 , width: 1250 > 
+---shape> style> color: #1A1A1A, Border: #3a2761
+
+3. insert text box
+----font: segoe(bold), size: 24, 
+-----general> effects> background off
+----select sales analysis > color>Theme color 7, 20%
+-----select  amazon Product> color> theme color 2, 20%
+
+4.Measure 
+YTD Sales = TOTALYTD(SUM(Amazon_Data[Price(Dollar)]),'Date Table'[Date])
+QTD Sales = TOTALQTD(SUM(Amazon_Data[Price(Dollar)]), 'Date Table'[Date])
+Add dollor and two decimal
+
+YTD Products Sold = TOTALYTD(COUNT(Amazon_Data[Product Category]), 'Date Table'[Date])
+YTD Reviews = TOTALYTD(SUM(Amazon_Data[Number of  reviews]), 'Date Table'[Date])
+Add two decimal
+
+5. for KPI card background container copy insert rectangle
+----size: height:95 , width: 260
+----copy an paste more 3 container
+-----select one container and press ctrl and select all container one by one.
+-----go to Format robbon> align> distribute horizonally. for equall gap between container.
+
+6. KPI card
+---general> Effect> background off
+---visual> callout value> font: segoe ui semi bold, size:30 color white
+---visual> category Label> font: segoe UI semi bold, color: theme color 1, 20%
+---select all by mouse left key, after selection click right key and group. 
+---group helps to move all KPI key at once.
+
+7. Area Chart
+---x-axis> month name
+---y-axis> Price(dollar)
+---Background off
+---greadline off
+---x-axis> values> color> white, 10% darker 
+---y-axis> values> color> white, 10% darker 
+---visula> line> color: #c499ca
+---visula> Shade area> area transparency: 80%
+---visual> markers on> size: 6px
+---title> font: segoe Ui semibold size:12 color: Theme color1, 20% lighter
+=====
+Bydefault month show in mismatch, so sort it from jan-dec
+---go to table view from left side of table symbol> go to table.eg table name: date table > 
+and add column: Month Number = MONTH('Date Table'[Date])      ->this result month number, jan=1, feb =2, dec=12.
+---go to report view. click on one column of data_table form left side of data view.
+  after that column tools option shows in ribbon. > sort by column> Month number.
+---------------------------------------------------------------------------------------------------
+8.Column charat
+---go to table view from left side of table symbol> go to table.eg table name: date table > 
+and add column:  Week Number = WEEKNUM('Date Table'[Date])   ->this result week in number, sun=1, saturay=7.
+
+copy formating form Area chart by format Painter
+---visula> x-axis> range> maximum: 53   because 53 week in a year.
+---visual> gridlines> horizontal and vertical both off
+---visual> colummn> color: fx> format style:gradient,color minimum: theme color3, 60% lighter , Maximum: theme color 3, 25% darker
+---legend> off
+       
+9. Matrix
+--- rows: product Category
+--- values:
+ YTD sales
+ QTD sales
+ YTD sales : go to value and click down arrow> shows vales as> percentage fo grand total.
+
+---style presets> minimal
+---grid> Horizaontal> color: #0e1aa77 , vertical gridline off
+---values> background> #0e1a77 , text: white
+---alternative background> #0e1a77 , text: white
+---Column header> segoe ui semibold, size: 10px, background:#0e1a77, text: #e8d166
+---row header> segeou ui semibold, side: 10px, background: #0e1a77, text: white
+---grand total> segeou ui semibold, size: 10px, background: black, text: white.
+
+---YTD conditional formatting> background> minimum: theme 1, 40% lighter , max: 25% lighter
+---QTD conditional formatting> background> minimum: theme 3, 40% lighter , max: 50% lighter
+---%GT conditional formatting> background> minimum: theme 5, 40% lighter , max: 25% lighter
+
+10. Stacked bar chart
+formatting: format painter from Column chart
+---y-axis> product discription
+---x-axis> YTD sales
+---filter: top 5   YTD sales
+---data lable> value >white
+---bar> color> Conditional formatting> what field should> YTD sales, minimum: theme 2, 50% darker, max: theme 1, 60% lighter
+
+11. Stacked bar chart
+copy formatting from Stacked bar chart
+---y-axis> prouct distribution
+---x-axis> YTD Reviews
+---filter: top 5 YTD Reviews
+---bar> color> Conditional formatting> what field should> YTD Review, minimum: theme 8, 50% darker, max: theme 8, 60% lighter
+
+12. Qtr
+ADD COLUMN
+---Quarter number: QUARTER('DATE TABLE'[DATE])
+ADD COLUMN
+---Qrt: CONCINATE("Qtr ",('DATE TABLE'[Quarter number]))
+
+13. SLICER
+Slicer1: field : product category
+Slicer2: Qtr
+
+
